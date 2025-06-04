@@ -1,0 +1,44 @@
+{% extends 'webdds/base.html' %}
+
+{% block title %}Подкатегории{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Подкатегории</h1>
+    <a href="{% url 'subcategory-create' %}" class="btn btn-primary">
+        <i class="bi bi-plus"></i> Добавить подкатегорию
+    </a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Категория</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subcategory in object_list %}
+            <tr>
+                <td>{{ subcategory.name }}</td>
+                <td>{{ subcategory.category }}</td>
+                <td>
+                    <a href="{% url 'subcategory-update' subcategory.pk %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'subcategory-delete' subcategory.pk %}" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">Нет подкатегорий</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

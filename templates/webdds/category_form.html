@@ -1,0 +1,45 @@
+{% extends 'webdds/base.html' %}
+
+{% block title %}{% if object %}Редактирование категории{% else %}Создание категории{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>{% if object %}Редактирование категории{% else %}Создание категории{% endif %}</h3>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Название категории</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.name.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_operation_type" class="form-label">Тип операции</label>
+                {{ form.operation_type }}
+                {% if form.operation_type.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.operation_type.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-save"></i> Сохранить
+                </button>
+                <a href="{% url 'category-list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle"></i> Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

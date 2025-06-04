@@ -1,0 +1,59 @@
+{% extends 'webdds/base.html' %}
+
+{% block title %}Удаление статуса{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">
+                <i class="bi bi-exclamation-triangle"></i> Подтверждение удаления
+            </h4>
+        </div>
+        <div class="card-body">
+            <h5>Вы действительно хотите удалить статус "{{ object.name }}"?</h5>
+            
+            {% if object.record_set.exists %}
+            <div class="alert alert-warning mt-3">
+                <h6><i class="bi bi-info-circle"></i> Внимание!</h6>
+                <p class="mb-1">Этот статус используется в {{ object.record_set.count }} записях:</p>
+                <ul class="list-group list-group-flush mt-2 mb-3">
+                    {% for record in object.record_set.all|slice:":3" %}
+                    <li class="list-group-item list-group-item-warning">
+                        {{ record.date|date:"d.m.Y" }} - {{ record.amount }} ₽ ({{ record.category.name }})
+                    </li>
+                    {% endfor %}
+                    {% if object.record_set.count > 3 %}
+                    <li class="list-group-item list-group-item-warning">
+                        ... и ещё {{ object.record_set.count|add:"-3" }} записей
+                    </li>
+                    {% endif %}
+                </ul>
+                <p class="mb-0"><strong>Удаление статуса приведёт к удалению всех связанных записей!</strong></p>
+            </div>
+            {% else %}
+            <div class="alert alert-info mt-3">
+                <i class="bi bi-info-circle"></i> Этот статус не используется в записях.
+            </div>
+            {% endif %}
+
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button type="submit" class="btn btn-danger me-2">
+                            <i class="bi bi-trash"></i> Да, удалить
+                        </button>
+                        <a href="{% url 'status-list' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Отмена
+                        </a>
+                    </div>
+                    <div class="text-muted small">
+                        Создан: {{ object.created_at|date:"d.m.Y" }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

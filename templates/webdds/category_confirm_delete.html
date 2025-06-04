@@ -1,0 +1,27 @@
+{% extends 'webdds/base.html' %}
+
+{% block title %}Удаление категории{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h3>Удаление категории</h3>
+    </div>
+    <div class="card-body">
+        <p>Вы уверены, что хотите удалить категорию "{{ object.name }}"?</p>
+        <p>Все связанные подкатегории ({{ object.subcategories.count }}) также будут удалены!</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="mt-4">
+                <button type="submit" class="btn btn-danger me-2">
+                    <i class="bi bi-trash"></i> Удалить
+                </button>
+                <a href="{% url 'category-list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle"></i> Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
